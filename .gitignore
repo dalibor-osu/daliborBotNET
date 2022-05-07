@@ -1,0 +1,14 @@
+
+token.txt
+**/appsettings.json
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/.idea.daliborBotNET.iml
+/modules.xml
+/contentModel.xml
+**/obj/
+**/.idea/
+**/bin/
