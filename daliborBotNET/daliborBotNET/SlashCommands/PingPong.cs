@@ -11,7 +11,7 @@ public class PingPong : SlashCommand
         command = new Command(835534125544112189, "ping", "Answers with Pong", Execute, client);
     }
 
-    private static async Task Execute(SocketSlashCommand command)
+    public override async Task Execute(SocketSlashCommand command)
     {
         await command.RespondAsync("Pong!");
     }

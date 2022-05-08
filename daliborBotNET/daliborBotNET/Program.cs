@@ -8,8 +8,8 @@ namespace daliborBotNET
 {
     public class Program
     {
-        public DiscordSocketClient client { get; private set; }
-        private ulong guildId = 835534125544112189;
+        private DiscordSocketClient _client;
+        private ulong _guildId = 835534125544112189;
         private IConfiguration _config;
         private Commands _commands;
 
@@ -18,18 +18,18 @@ namespace daliborBotNET
         private async Task MainAsync()
         {
             Console.WriteLine("Creating variables...");
-            client = new DiscordSocketClient();
-            _commands = new Commands(client);
+            _client = new DiscordSocketClient();
+            _commands = new Commands(_client);
             _config = GetConfig();
             
             Console.WriteLine("Assigning client events...");
-            client.Log += Log;
-            client.Ready += Client_Ready;
-            client.SlashCommandExecuted += SlashCommandHandler;
+            _client.Log += Log;
+            _client.Ready += Client_Ready;
+            _client.SlashCommandExecuted += SlashCommandHandler;
 
             Console.WriteLine("Logging in...");
-            await client.LoginAsync(TokenType.Bot, _config["Token"]);
-            await client.StartAsync();
+            await _client.LoginAsync(TokenType.Bot, _config["Token"]);
+            await _client.StartAsync();
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
@@ -62,7 +62,7 @@ namespace daliborBotNET
             }
         }
         
-        public async Task Client_Ready()
+        private async Task Client_Ready()
         {
             try
             {
@@ -72,20 +72,19 @@ namespace daliborBotNET
                     if (command._isGlobal)
                     {
                         Console.WriteLine("Adding command: " + command.commandName + " as global");
-                        await client.CreateGlobalApplicationCommandAsync(command.GetBuilder().Build());
+                        await _client.CreateGlobalApplicationCommandAsync(command.GetBuilder().Build());
                     }
                     else
                     {
                         var newGuildId = (ulong)command.guildId!;
                         Console.WriteLine("Adding command: " + command.commandName + " as private in guild " + newGuildId);
-                        var guild = client.GetGuild(newGuildId);
+                        var guild = _client.GetGuild(newGuildId);
                         await guild.CreateApplicationCommandAsync(command.GetBuilder().Build());
                     }
                 }
             }
             catch(ApplicationCommandException exception)
             {
-                // You can send this error somewhere or just print it to the console, for this example we're just going to print it.
                 Console.WriteLine(exception.Message);
             }
         }

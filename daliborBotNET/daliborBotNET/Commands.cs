@@ -6,7 +6,7 @@ namespace daliborBotNET;
 public class Commands
 {
     private readonly List<Command>? _commands;
-    private DiscordSocketClient _client;
+    private readonly DiscordSocketClient _client;
     
     public Commands(DiscordSocketClient client, List<Command>? commands = null)
     {
@@ -30,5 +30,6 @@ public class Commands
     private async void CreateCommands()
     {
         await AddCommand(new PingPong(_client).command);
+        await AddCommand(new Add(_client).command);
     }
 }
