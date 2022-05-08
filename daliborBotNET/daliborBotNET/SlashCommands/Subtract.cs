@@ -1,21 +1,16 @@
 ﻿using Discord;
 
 namespace daliborBotNET.SlashCommands;
+
 using Discord.WebSocket;
 
-public class Add : SlashCommand
+public class Subtract : SlashCommand
 {
-    private string _name;
-    private string _description;
-    //private ulong _guildID;
-    public Add(DiscordSocketClient client)
+    public Subtract(DiscordSocketClient client)
     {
-        _name = "add";
-        _description = "Adds two numbers together";
-        
-        command = new Command(835534125544112189, _name, _description, GetOptions(), Execute, client);
+        command = new Command(835534125544112189, "subtract", "Subtracts two numbers", GetOptions(), Execute, client);
     }
-
+    
     private List<SlashCommandOptionBuilder> GetOptions()
     {
         List<SlashCommandOptionBuilder> options = new List<SlashCommandOptionBuilder>();
@@ -45,6 +40,6 @@ public class Add : SlashCommand
         var a = (double) command.Data.Options.First().Value;
         var b = (double) command.Data.Options.Last().Value;
         
-        await command.RespondAsync($"{a} + {b} = {a + b}");
+        await command.RespondAsync($"{a} - {b} = {a - b}");
     }
 }

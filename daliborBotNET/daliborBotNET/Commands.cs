@@ -31,5 +31,7 @@ public class Commands
     {
         await AddCommand(new PingPong(_client).command);
         await AddCommand(new Add(_client).command);
+        await AddCommand(new Subtract(_client).command);
+        await AddCommand(new QuadraticEquation(_client).command);
     }
 }
