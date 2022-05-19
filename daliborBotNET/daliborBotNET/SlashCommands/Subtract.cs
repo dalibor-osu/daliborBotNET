@@ -14,6 +14,7 @@ public class Subtract : SlashCommand
     private List<SlashCommandOptionBuilder> GetOptions()
     {
         List<SlashCommandOptionBuilder> options = new List<SlashCommandOptionBuilder>();
+        
         SlashCommandOptionBuilder optionA = new SlashCommandOptionBuilder
         {
             Name = "a",
