@@ -8,7 +8,7 @@ public class QuadraticEquation : SlashCommand
 {
     public QuadraticEquation(DiscordSocketClient client)
     {
-        command = new Command(835534125544112189, "quad-equation", "Solves quadratic equation", GetOptions(), Execute, client);
+        command = new Command(976544106438348810, "quad-equation", "Solves quadratic equation", GetOptions(), Execute, client);
     }
     
     private List<SlashCommandOptionBuilder> GetOptions()
@@ -55,12 +55,12 @@ public class QuadraticEquation : SlashCommand
         
         var result = Solve(a, b, c);
 
-        if(result == null)
+        if (result == null)
         {
             var complexResult = SolveComplex(a, b, c);
             await command.RespondAsync($"This equation has complex solution: x1 = {complexResult[0].Real} + {complexResult[0].Imaginary}i, x2 = {complexResult[1].Real} + {complexResult[1].Imaginary}i");
         }
-        else if(result[0] == result[1])
+        else if (result[0] == result[1])
         {
             await command.RespondAsync($"This equation has one solution: {result[0]}");
         }

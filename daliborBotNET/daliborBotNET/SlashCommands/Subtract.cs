@@ -8,7 +8,7 @@ public class Subtract : SlashCommand
 {
     public Subtract(DiscordSocketClient client)
     {
-        command = new Command(835534125544112189, "subtract", "Subtracts two numbers", GetOptions(), Execute, client);
+        command = new Command(976544106438348810, "subtract", "Subtracts two numbers", GetOptions(), Execute, client);
     }
     
     private List<SlashCommandOptionBuilder> GetOptions()

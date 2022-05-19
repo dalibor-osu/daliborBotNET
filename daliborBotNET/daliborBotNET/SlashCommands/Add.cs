@@ -13,7 +13,7 @@ public class Add : SlashCommand
         _name = "add";
         _description = "Adds two numbers together";
         
-        command = new Command(835534125544112189, _name, _description, GetOptions(), Execute, client);
+        command = new Command(976544106438348810, _name, _description, GetOptions(), Execute, client);
     }
 
     private List<SlashCommandOptionBuilder> GetOptions()

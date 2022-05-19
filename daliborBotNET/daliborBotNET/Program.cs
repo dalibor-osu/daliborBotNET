@@ -51,6 +51,7 @@ namespace daliborBotNET
         
         private async Task SlashCommandHandler(SocketSlashCommand command)
         {
+            Console.WriteLine($"{command.User.Username} ({command.User.Id}) used {command.Data.Name}");;
             Command? usedCommand = _commands.GetCommands()?.Find(x => x.commandName == command.Data.Name);
             if (usedCommand == null)
             {
@@ -66,10 +67,16 @@ namespace daliborBotNET
         {
             try
             {
-                if (_commands.GetCommands() == null) Console.WriteLine("Commands are null");
-                foreach (var command in _commands.GetCommands())
+                List<Command> commands = _commands.GetCommands();
+                if (commands.Count == 0)
                 {
-                    if (command._isGlobal)
+                    Console.WriteLine("There are no commands!");
+                    return;
+                }
+                
+                foreach (var command in commands)
+                {
+                    if (command.isGlobal)
                     {
                         Console.WriteLine("Adding command: " + command.commandName + " as global");
                         await _client.CreateGlobalApplicationCommandAsync(command.GetBuilder().Build());

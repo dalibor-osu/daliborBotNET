@@ -11,7 +11,7 @@ public class Command
     private string _commandDescription;
     private List<SlashCommandOptionBuilder> _options;
     private Func<SocketSlashCommand, Task> _commandAction;
-    public bool _isGlobal;
+    public bool isGlobal;
     private DiscordSocketClient _client;
     private SlashCommandBuilder _builder;
     
@@ -65,7 +65,7 @@ public class Command
 
     private void GenerateCommand()
     {
-        if (guildId == null) _isGlobal = true;
+        if (guildId == null) isGlobal = true;
         _builder = new SlashCommandBuilder();
         _builder.WithName(commandName);
         _builder.WithDescription(_commandDescription);
