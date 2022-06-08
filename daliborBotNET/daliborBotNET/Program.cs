@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using Discord;
 using Discord.Net;
 using Discord.WebSocket;
@@ -12,6 +13,7 @@ namespace daliborBotNET
         private DiscordSocketClient? _client;
         private IConfiguration? _config;
         private Commands? _commands;
+        private ulong _testGuildId = 835534125544112189;
 
         public static Task Main(string[] args) => new Program().MainAsync();
 
@@ -118,22 +120,23 @@ namespace daliborBotNET
 
         private void HandleCommand(Task<string?> command)
         {
-            switch (command.Result)
+            string[] args = command.Result.Split(' ');
+            
+            switch (args[0])
             {
                 case "stop":
                     Environment.Exit(0);
                     break;
                 
-                case string a when a.Contains("msg"):
-                    string[] args = a.Split(' ');
-                    HandleMessageUser(args, GetMessageContent(command.Result));
+                case "msg":
+                    HandleMessageUser(_client, args, GetMessageContent(command.Result));
                     break;
             }
 
             ReadUserInput();
         }
 
-        private async void HandleMessageUser(string[] args, string msgContent)
+        public static async void HandleMessageUser(DiscordSocketClient _client, string[] args, string msgContent)
         {
             ulong id;
 
@@ -142,17 +145,31 @@ namespace daliborBotNET
                 Console.WriteLine("Wrong UserID format");
                 return;
             }
-            
-            IUser user = _client.GetUser(id);
+
+            var user = await _client!.GetUserAsync(id);
             
             if (user == null)
             {
-                Console.WriteLine($"Couldn't get user: {args[1]}");
+                Console.WriteLine($"Couldn't get global user: {id}. Trying to find them in a test guild...");
+                var guild = _client.GetGuild(936736299698749521);
+                
+                if (guild == null)
+                {
+                    Console.WriteLine("Couldn't get test guild");
+                    return;
+                }
+
+                user = guild.GetUser(id);
+            }
+            
+            if (user == null)
+            {
+                Console.WriteLine($"Couldn't get user: {id}");
                 return;
             }
             
             var channel = await user.CreateDMChannelAsync();
-            
+
             try
             {
                 await channel.SendMessageAsync(msgContent);
@@ -160,7 +177,11 @@ namespace daliborBotNET
             }
             catch (HttpException ex) when (ex.HttpCode == HttpStatusCode.Forbidden)
             {
-                Console.WriteLine($"Boo, I cannot message {user}.");
+                Console.WriteLine($"Boo, I cannot message {user.Username}.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Couldn't send message: " + ex.Message);
             }
         }
 
@@ -169,6 +190,7 @@ namespace daliborBotNET
             int index = msg.IndexOf(" ");
             index = msg.IndexOf(" ", index + 1);
             return msg.Substring(index, msg.Length - index);
-        }
+        } 
     }
 }
+

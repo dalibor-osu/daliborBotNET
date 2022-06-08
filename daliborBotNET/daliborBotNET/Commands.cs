@@ -34,5 +34,7 @@ public class Commands
         await AddCommand(new Subtract(_client).command);
         await AddCommand(new QuadraticEquation(_client).command);
         await AddCommand(new DivideComplex(_client).command);
+        await AddCommand(new BanBrambora(_client).command);
+        await AddCommand(new StopBan(_client).command);
     }
 }
